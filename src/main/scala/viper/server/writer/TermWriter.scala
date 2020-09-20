@@ -50,7 +50,6 @@ object TermWriter {
       case sorts.Multiset(elementsSort) => s("Multiset", elementsSort)
       case sorts.UserSort(id) => JsObject("id" -> JsString("UserSort"), "name" -> JsString(id.name))
       case sorts.FieldValueFunction(codomainSort) => s("FVF", codomainSort)
-      case sorts.PredicateSnapFunction(codomainSort) => s("PSF", codomainSort)
       case simple => JsObject("id" -> JsString(simple.id.name))
     }
   }
@@ -84,13 +83,6 @@ object TermWriter {
         "field" -> JsString(field),
         "fieldValueFunction" -> toJSON(fieldValueFunction),
         "receiver" -> toJSON(receiver)
-      )
-    case PredicateLookup(predicate, predicateSnapFunction, args) =>
-      JsObject(
-        "type" -> JsString("predicateLookup"),
-        "predicate" -> JsString(predicate),
-        "predicateSnapFunction" -> toJSON(predicateSnapFunction),
-        "args" -> JsArray((args map toJSON).toVector)
       )
 
     case And(terms) => JsObject("type" -> JsString("and"), "terms" -> JsArray((terms map toJSON).toVector))
